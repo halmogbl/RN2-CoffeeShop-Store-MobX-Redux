@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
 // NativeBase Components
 import { Text, Left, Body, Right, Button, ListItem, Icon } from "native-base";
 
 class CartItem extends Component {
   render() {
     const { item } = this.props;
+
     return (
       <ListItem style={{ borderBottomWidth: 0 }}>
         <Left>

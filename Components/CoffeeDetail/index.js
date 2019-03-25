@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+import { connect } from "react-redux";
 // NativeBase Components
 import {
   Thumbnail,
@@ -39,8 +39,19 @@ class CoffeeDetail extends Component {
   };
 
   render() {
-    if (!coffeeshops) return <Content />;
-    const coffeeshop = coffeeshops[0];
+    // this is newer cleaner way to use states from mapStateToProps
+    // decleration
+    const { coffeeShops, loading } = this.props.coffeeReducer;
+
+    // ---------------- old way--------------------
+    // if (!coffeeshops) return <Content />;
+    // const coffeeshop = this.props.coffeeShops[0];
+
+    // ----------------- new way ------------------
+    if (loading) return <Content />;
+    const coffeeshop = coffeeShops[0];
+    // ----------------------------------------------
+
     return (
       <Content>
         <List>
@@ -53,7 +64,7 @@ class CoffeeDetail extends Component {
             </Left>
             <Body />
             <Right>
-              <Thumbnail bordered source={coffeeshop.img} />
+              <Thumbnail bordered source={{ uri: coffeeshop.img }} />
             </Right>
           </ListItem>
           <ListItem style={{ borderBottomWidth: 0 }}>
@@ -93,4 +104,17 @@ class CoffeeDetail extends Component {
   }
 }
 
-export default CoffeeDetail;
+const mapStateToProps = state => {
+  return {
+    coffeeShops: state.coffeeReducer.coffeeShops,
+    loading: state.coffeeReducer.loading,
+
+    // cleaner way to do this insteade of fetching two of my states. we can just do this:
+    coffeeReducer: state.coffeeReducer // this way i have all my states here . go under the render to use it
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(CoffeeDetail);

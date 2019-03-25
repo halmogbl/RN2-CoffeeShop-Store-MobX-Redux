@@ -6,6 +6,7 @@ import { ListItem, Card, CardItem, Thumbnail, Text, Left } from "native-base";
 
 // Style
 import styles from "./styles";
+import { connect } from "react-redux";
 
 class CoffeeItem extends Component {
   handlePress = () => {
@@ -14,7 +15,11 @@ class CoffeeItem extends Component {
   render() {
     const { coffeeShop } = this.props;
     return (
-      <ImageBackground source={coffeeShop.background} style={styles.background}>
+      <ImageBackground
+        // this is how to sow the pictures
+        source={{ uri: coffeeShop.background }}
+        style={styles.background}
+      >
         <View style={styles.overlay} />
         <ListItem button onPress={this.handlePress} style={styles.listitem}>
           <Card style={styles.transparent}>
@@ -22,7 +27,8 @@ class CoffeeItem extends Component {
               <Left>
                 <Thumbnail
                   bordered
-                  source={coffeeShop.img}
+                  // this is how to sow the pictures
+                  source={{ uri: coffeeShop.img }}
                   style={styles.thumbnail}
                 />
                 <Text style={styles.text}>{coffeeShop.name}</Text>
@@ -38,4 +44,16 @@ class CoffeeItem extends Component {
   }
 }
 
-export default CoffeeItem;
+const mapStateToProps = state => {
+  return {
+    coffeeShops: state.coffeeReducer.coffeeShops,
+    loading: state.coffeeReducer.loading,
+    items: state.cartReducer.items,
+    loading: state.cartReducer.loading
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(CoffeeItem);
